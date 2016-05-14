@@ -1,7 +1,7 @@
 {
   "name": "hubot-command-analytics",
   "description": "Some analytics about the hubot command's used",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Daniel Petisme <daniel.petisme@gmail.com>",
   "license": "MIT",
   "keywords": "analytics",
