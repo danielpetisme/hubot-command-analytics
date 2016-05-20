@@ -5,15 +5,16 @@
 #   LIST_OF_ENV_VARS_TO_SET
 #
 # Commands:
-#   hubot hello - <what the respond trigger does>
-#   orly - <what the hear trigger does>
-#
-# Notes:
-#   <optional notes required for the script>
+#   * - Hear for every command ask to hubot
+#   hubot score <command> - How many times <command> has been invoked
+#   hubot top <n> <asc|dec> - Display the <n> commands order by scores <asc> or <desc>. Default n=10, order=desc.
 #
 # Author:
 #   Daniel Petisme <daniel.petisme@gmail.com>
 
+'use strict'
+
+AsciiTable = require('ascii-table')
 
 module.exports = (robot) ->
   command_pattern = new RegExp robot.name + " (.*)", "i"
@@ -44,9 +45,12 @@ module.exports = (robot) ->
   ordered = (that, order) ->
     return objToArray(that).sort(sorters[order])
 
-  printScore = (that) ->
-    "Command | Score\n" + for _, it of that
-      "#{it.command}: #{it.score}\n"
+  toAsciiTable = (that) ->
+    table = new AsciiTable()
+    table.setHeading('Score', 'Command')
+    for _, it of that
+      table.addRow(it.score, it.command)
+    return table.toString()
 
 
   robot.hear command_pattern, (res) ->
@@ -72,5 +76,6 @@ module.exports = (robot) ->
     order = res.match[3] or 'desc'
     order = order.trim()
     sorted = ordered(getOrCreateAnalytics(), order)
-    answer = printScore(sorted[0..count - 1])
+    table = toAsciiTable(sorted[0..count - 1])
+    answer = '\n```' + table + '```'
     res.reply answer

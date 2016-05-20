@@ -34,6 +34,15 @@ user1>> hubot hello
 ...
 user1>> hubot score hello
 hubot>> user1 hello: 1
+user1>> hubot top
+hubot>> user1
+.---------------------.
+| Score |   Command   |
+|-------|-------------|
+|     1 | hello       |
+|     1 | score hello |
+|     1 | top         |
+'---------------------'
 ```
 
 ## Availabe Commands

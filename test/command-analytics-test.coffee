@@ -84,18 +84,43 @@ describe 'command-analytics', ->
   it 'should display a message if score is invoked without a command', ->
 
   it 'should display the top 10 in desc order by default', ->
+    answer = """
+.-----------------.
+| Score | Command |
+|-------|---------|
+|   100 | help    |
+|    42 | bar     |
+|    23 | foo     |
+|     6 | dummy   |
+|     4 | baz     |
+|     4 | pug_me  |
+|     3 | hello   |
+|     3 | plop    |
+|     2 | cat_me  |
+|     1 | top     |
+'-----------------'
+"""
     @room.robot.brain.set 'analytics', dummyAnalytics()
     @room.user.say('alice', '@hubot top').then =>
       expect(@room.messages).to.eql [
         ['alice', '@hubot top']
         ['hubot',
-         '@alice Command | Score\nhelp: 100\n,bar: 42\n,foo: 23\n,dummy: 6\n,baz: 4\n,pug_me: 4\n,hello: 3\n,plop: 3\n,cat_me: 2\n,top: 1\n']
+         "@alice \n```#{answer}```"]
       ]
 
   it 'should display the top 3 in asc order', ->
+    answer = """
+.-------------------.
+| Score |  Command  |
+|-------|-----------|
+|     0 | vader     |
+|     1 | hi        |
+|     1 | top 3 asc |
+'-------------------'
+"""
     @room.robot.brain.set 'analytics', dummyAnalytics()
     @room.user.say('alice', '@hubot top 3 asc').then =>
       expect(@room.messages).to.eql [
         ['alice', '@hubot top 3 asc'],
-        ['hubot', '@alice Command | Score\nvader: 0\n,hi: 1\n,top 3 asc: 1\n']
+        ['hubot', "@alice \n```#{answer}```"]
       ]
